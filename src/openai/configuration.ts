@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-
+import formData from 'form-data'
 
 export interface ConfigurationParameters {
     apiKey?: string | Promise<string> | ((name: string) => string) | ((name: string) => Promise<string>);
@@ -82,7 +82,7 @@ export class Configuration {
      * @type {new () => FormData}
      */
     formDataCtor?: new () => any;
-
+    
     constructor(param: ConfigurationParameters = {}) {
         this.apiKey = param.apiKey;
         this.organization = param.organization;
@@ -105,7 +105,7 @@ export class Configuration {
             this.baseOptions.headers['OpenAI-Organization'] = this.organization;
         }
         if (!this.formDataCtor) {
-            this.formDataCtor = require("form-data");
+            this.formDataCtor = formData
         }
     }
 

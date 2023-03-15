@@ -3,8 +3,10 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from '@/stores/index';
+import '@/http/index'
 
 import './assets/main.css';
+import 'element-plus/dist/index.css'
 
 const app = createApp(App);
 
