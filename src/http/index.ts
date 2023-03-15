@@ -1,3 +1,4 @@
 import axios from "axios";
-axios.defaults.headers['Authorization'] = 'Bearer '+''
-axios.defaults.headers['organization '] = ''
+import {apiKey,organization} from '@/tmp/index'
+axios.defaults.headers['Authorization'] = 'Bearer '+apiKey
+axios.defaults.headers['organization '] = organization
