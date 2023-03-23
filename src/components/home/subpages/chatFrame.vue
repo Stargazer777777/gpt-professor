@@ -17,14 +17,12 @@
 </template>
 
 <script setup lang="ts">
-import InputBox from './common/inputBox.vue';
-import SingleChat from './common/singleChat.vue';
+import InputBox from './chatFrame/inputBox.vue';
+import SingleChat from './chatFrame/singleChat.vue';
 </script>
 
 <style scoped lang="scss">
 .frame {
-  width: 50%;
-  height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
   border-radius: 5px;

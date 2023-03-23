@@ -1,7 +1,9 @@
 <template>
-  <Menu></Menu>
-  <div class="box">
-    <RouterView></RouterView>
+  <div class="container">
+    <Menu></Menu>
+    <div class="box">
+      <RouterView></RouterView>
+    </div>
   </div>
 </template>
 
@@ -10,7 +12,10 @@ import Menu from '@/components/home/menu.vue';
 </script>
 
 <style scoped lang="scss">
-.box {
+.container {
+  min-height: 500px;
+  .box {
     padding: 20px;
+  }
 }
 </style>
