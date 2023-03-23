@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ChatFrame: typeof import('./src/components/home/subpages/chatFrame.vue')['default']
     ChatOp: typeof import('./src/components/home/subpages/chatOp.vue')['default']
+    ChatOperate: typeof import('./src/components/home/subpages/chatOperate.vue')['default']
     ChatOption: typeof import('./src/components/home/subpages/chatOption.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']

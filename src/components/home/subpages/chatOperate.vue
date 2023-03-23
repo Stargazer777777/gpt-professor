@@ -8,7 +8,8 @@
       </template>
       <template #default>
         <div class="card-content">
-          <el-button class="btn"
+          <el-button
+            class="btn"
             v-for="item in actionList"
             :key="item.key"
             type="primary"
@@ -28,19 +29,16 @@ type Action = {
   name: string;
   key: string;
 };
-const actionList: Action[] = [
-  {
-    name: '清空',
-    key: 'clean',
-  },
-  {
-    name: '新对话',
-    key: 'new',
-  },
-];
-const act = (key: string) => {
-  console.log(key);
+
+type Props = {
+  actionList: Action[];
 };
+const props = defineProps<Props>();
+
+const act = (key: string) => {
+  emits('on-act', key);
+};
+const emits = defineEmits(['on-act']);
 </script>
 
 <style scoped lang="scss">

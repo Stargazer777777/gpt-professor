@@ -73,68 +73,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import type { Option } from '@/declares/chatOption';
 
-type Types = 'input' | 'select' | 'slider' | 'switch' | 'textarea';
-
-type Option = {
-  name: string;
-  key: string;
-  type: Types;
-  options?: Array<{ name: string; value: any }>;
-  range?: { start: number; end: number };
-  default?: any;
+type Props = {
+  options: Option[];
 };
+const props = defineProps<Props>();
 
-const options: Option[] = [
-  {
-    name: 'input',
-    key: 'inputkey',
-    type: 'input',
-    default: 'xxx',
-  },
-  {
-    name: 'select',
-    key: 'selectKey',
-    type: 'select',
-    options: [
-      {
-        name: 'op1',
-        value: 'op1',
-      },
-      {
-        name: 'op2',
-        value: 'op2',
-      },
-    ],
-    default: 'op2',
-  },
-  {
-    name: 'slider',
-    key: 'sliderKey',
-    type: 'slider',
-    default: 1,
-    range: { start: 0, end: 2 },
-  },
-  {
-    name: 'switch',
-    key: 'switchKey',
-    type: 'switch',
-    default: true,
-  },
-  {
-    name: 'textarea',
-    key: 'textareaKey',
-    type: 'textarea',
-    default: 'xxx',
-  },
-];
-const formData = ref<Record<string, any>>({
-  inputKey: '',
+const formData = ref<Record<string, any>>({});
+
+props.options.forEach((item) => {
+  formData.value[item.key] = item.default || null;
 });
 
-options.forEach((item) => {
-  formData.value[item.key] = item.default || null;
+const emits = defineEmits(['on-formUpdate']);
+
+watch(formData.value, () => {
+  console.log('here');
+  
+  emits('on-formUpdate', formData.value);
 });
 </script>
 
