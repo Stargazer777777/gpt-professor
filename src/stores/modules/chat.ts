@@ -1,6 +1,21 @@
 import { defineStore } from 'pinia';
-import type { Option } from '@/declares/chatOption';
 import { ref } from 'vue';
+
+export type Option = {
+  name: string;
+  key: string;
+  type: Types;
+  options?: Array<{ name: string; value: any }>;
+  range?: { start: number; end: number };
+  default?: any;
+};
+
+export type Types = 'input' | 'select' | 'slider' | 'switch' | 'textarea';
+
+export type ChatMessage = {
+  role: 'assistant' | 'user' | 'system';
+  content: string;
+};
 export const useChatStore = defineStore('chat-store', () => {
   const options: Option[] = [
     {
@@ -15,9 +30,9 @@ export const useChatStore = defineStore('chat-store', () => {
       ],
     },
   ];
-  const actionList:Array<{
-    name:string,
-    key:string
+  const actionList: Array<{
+    name: string;
+    key: string;
   }> = [
     {
       name: '清空',
@@ -33,9 +48,12 @@ export const useChatStore = defineStore('chat-store', () => {
     formData.value[item.key] = item.default || null;
   });
 
+  const chatMessages = ref<ChatMessage[]>([]);
+  
   return {
     formData,
     options,
-    actionList
+    actionList,
+    chatMessages,
   };
 });

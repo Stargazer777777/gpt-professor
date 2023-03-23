@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { Option } from '@/declares/chatOption';
+import type { Option } from '@/stores/modules/chat';
 
 type Props = {
   options: Option[];
@@ -91,7 +91,7 @@ const emits = defineEmits(['on-formUpdate']);
 
 watch(formData.value, () => {
   console.log('here');
-  
+
   emits('on-formUpdate', formData.value);
 });
 </script>

@@ -145,11 +145,6 @@ export const toPathString = function (url: URL) {
 export const createRequestFunction = function (axiosArgs: RequestArgs, globalAxios: AxiosInstance, BASE_PATH: string, configuration?: Configuration) {
     return <T = unknown, R = AxiosResponse<T>>(axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
         const axiosRequestArgs = {...axiosArgs.options, url: (configuration?.basePath || basePath) + axiosArgs.url};
-        // axiosRequestArgs.proxy = {
-        //     host:'127.0.0.1',
-        //     port:7890,
-        //     protocol:'http'
-        // }
         return axios.request<T, R>(axiosRequestArgs);
     };
 }

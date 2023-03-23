@@ -17,7 +17,7 @@ import type { Configuration } from './configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
-import globalAxios from 'axios';
+import {openAiInstance1 as globalAxios} from '@/http/index';
 
 export const BASE_PATH = "https://api.openai.com/v1".replace(/\/+$/, "");
 

@@ -82,7 +82,7 @@ export class Configuration {
      * @type {new () => FormData}
      */
     formDataCtor?: new () => any;
-    
+
     constructor(param: ConfigurationParameters = {}) {
         this.apiKey = param.apiKey;
         this.organization = param.organization;
@@ -97,7 +97,6 @@ export class Configuration {
             this.baseOptions = {};
         }
         this.baseOptions.headers = {
-            'User-Agent': `OpenAI/NodeJS/3.2.1`,
             'Authorization': `Bearer ${this.apiKey}`,
             ...this.baseOptions.headers,
         }
@@ -105,7 +104,7 @@ export class Configuration {
             this.baseOptions.headers['OpenAI-Organization'] = this.organization;
         }
         if (!this.formDataCtor) {
-            this.formDataCtor = formData
+            this.formDataCtor = formData;
         }
     }
 

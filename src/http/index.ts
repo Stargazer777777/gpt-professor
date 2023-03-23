@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { apiKey, organization } from '@/tmp/index';
 import { ElMessage } from 'element-plus';
-const openAiInstance = axios.create();
+// 自定义的实例
+const openAiInstance2 = axios.create();
 
-openAiInstance.interceptors.request.use((config) => {
+openAiInstance2.interceptors.request.use((config) => {
   if (!apiKey) {
     ElMessage.error('似乎没有填apiKey呢');
     return Promise.reject('without apiKey');
@@ -17,4 +18,15 @@ openAiInstance.interceptors.request.use((config) => {
   return config;
 });
 
-export { openAiInstance };
+// 官方提供的openAI库的axios实例
+const openAiInstance1 = axios.create();
+openAiInstance1.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export { openAiInstance2, openAiInstance1 };
