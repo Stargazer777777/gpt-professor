@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { Option } from '@/declare/common';
-import {openAiManager} from '@/http/apis/openai'
+import { openAiManager } from '@/http/apis/openai';
 
 export interface RequestMessage {
   role: 'assistant' | 'user' | 'system';
@@ -68,32 +68,32 @@ export const useChatStore = defineStore('chat-store', () => {
       default: 1,
     },
     {
-      name:'stop',
-      key:'stop',
-      type:'input',
-      default:''
+      name: 'stop',
+      key: 'stop',
+      type: 'input',
+      default: '',
     },
     {
-      name:'最大生成令牌数，设置-1表示无限',
-      key:'max_tokens',
-      type:'slider',
-      range:{start:-1,end:32000,step:1},
-      default:-1
+      name: '最大生成令牌数，设置-1表示无限',
+      key: 'max_tokens',
+      type: 'slider',
+      range: { start: -1, end: 32000, step: 1 },
+      default: -1,
     },
     {
-      name:'谈论新主题可能性，默认为0',
-      key:'presence_penalty',
-      type:'slider',
-      range:{start:-2,end:2,step:0.1},
-      default:0
+      name: '谈论新主题可能性，默认为0',
+      key: 'presence_penalty',
+      type: 'slider',
+      range: { start: -2, end: 2, step: 0.1 },
+      default: 0,
     },
     {
-      name:'重复同样的话的可能。默认为0',
-      key:'frequency_penalty',
-      type:'slider',
-      range:{start:-2,end:2,step:0.1},
-      default:0
-    }
+      name: '重复同样的话的可能。默认为0',
+      key: 'frequency_penalty',
+      type: 'slider',
+      range: { start: -2, end: 2, step: 0.1 },
+      default: 0,
+    },
   ];
   const actionList: Array<{
     name: string;
@@ -113,20 +113,7 @@ export const useChatStore = defineStore('chat-store', () => {
     formData.value[item.key] = item.default;
   });
 
-  const chatMessages = ref<ChatMessage[]>([
-    {
-      role: 'assistant',
-      content: 'hello',
-      status: true,
-      headPosition: 'left',
-    },
-    {
-      role: 'user',
-      content: 'hi',
-      status: true,
-      headPosition: 'right',
-    },
-  ]);
+  const chatMessages = ref<ChatMessage[]>([]);
 
   const appendUserMessage = (content: string) => {
     chatMessages.value.push({
@@ -154,21 +141,26 @@ export const useChatStore = defineStore('chat-store', () => {
     return messages;
   };
 
-  const genRequestBody = ():any=> {
+  const genRequestBody = (): any => {
     const formDataCp = {
-      ...formData.value
+      ...formData.value,
+    };
+    delete formDataCp['system'];
+    if (formDataCp['max_tokens'] === -1) {
+      formDataCp['max_tokens'] = Infinity;
     }
-    delete formDataCp['system']
     return {
       ...formDataCp,
-      messages:genRequestMessages(),
-      stream:false
-    }
-  }
+      messages: genRequestMessages(),
+      stream: false,
+    };
+  };
 
-  const chat = async(content: string) => {
+  const chat = async (content: string) => {
     appendUserMessage(content);
-    const res = await openAiManager.openAiAPi.createChatCompletion({...genRequestBody()})
+    const res = await openAiManager.openAiAPi.createChatCompletion({
+      ...genRequestBody(),
+    });
     console.log(res);
   };
 
@@ -177,6 +169,6 @@ export const useChatStore = defineStore('chat-store', () => {
     options,
     actionList,
     chatMessages,
-    chat
+    chat,
   };
 });

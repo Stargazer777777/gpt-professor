@@ -7,7 +7,7 @@
       ></aiOperate>
     </div>
     <div class="frame">
-      <MessageFrame :chat-messages="store.chatMessages" @on-user-input=""></MessageFrame>
+      <MessageFrame :chat-messages="store.chatMessages" @on-user-input="chat"></MessageFrame>
     </div>
     <div class="option">
       <aiOption
@@ -28,6 +28,10 @@ const store = useChatStore();
 const operateAct = (actionKey: string) => {
   console.log(actionKey);
 };
+
+const chat = (text:string)=> {
+  store.chat(text)
+}
 </script>
 
 <style scoped lang="scss">
