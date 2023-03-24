@@ -78,17 +78,17 @@ import type { Option } from '@/stores/modules/chat';
 
 type Props = {
   options: Option[];
-  formData:Record<string, any>
+  modelValue:Record<string, any>
 };
 const props = defineProps<Props>();
 
 const tempFormData = ref<Record<string, any>>({
-  ...props.formData
+  ...props.modelValue
 });
-const emits = defineEmits(['on-formUpdate']);
+const emits = defineEmits(['update:modelValue']);
 
 watch(tempFormData.value, () => {
-  emits('on-formUpdate', tempFormData.value);
+  emits('update:modelValue',tempFormData.value)
 });
 </script>
 

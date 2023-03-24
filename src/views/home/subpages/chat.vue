@@ -11,9 +11,8 @@
     </div>
     <div class="option">
       <ChatOption
+        v-model="store.formData"
         :options="store.options"
-        :form-data="store.formData"
-        @on-form-update="updateFrom"
       ></ChatOption>
     </div>
   </div>
@@ -26,9 +25,6 @@ import ChatOption from '@/components/home/subpages/chatOption.vue';
 import { useChatStore } from '@/stores/modules/chat';
 const store = useChatStore();
 
-const updateFrom = (tempFormData: Record<string, any>) => {
-  store.formData = tempFormData;
-};
 const operateAct = (actionKey: string) => {
   console.log(actionKey);
 };
