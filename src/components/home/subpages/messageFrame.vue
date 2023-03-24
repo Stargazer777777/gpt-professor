@@ -2,27 +2,33 @@
   <div class="frame">
     <el-scrollbar>
       <div class="chat-content">
-        <SingleChat
+        <SingleMessage
           v-for="(item, index) in chatMessages"
           :chat-message="item"
           :key="index"
-        ></SingleChat>
+        ></SingleMessage>
       </div>
     </el-scrollbar>
 
-    <InputBox></InputBox>
+    <InputBox @on-submit="handleUserInput"></InputBox>
   </div>
 </template>
 
 <script setup lang="ts">
-import InputBox from './chatFrame/inputBox.vue';
-import SingleChat from './chatFrame/singleChat.vue';
+import InputBox from './messageFrame/inputBox.vue';
+import SingleMessage from './messageFrame/singleMessage.vue';
 import type { ChatMessage } from '@/stores/modules/chat';
 
 type Props = {
   chatMessages: ChatMessage[];
 };
 const props = defineProps<Props>();
+
+const emits = defineEmits(['on-userInput']);
+
+const handleUserInput = (text: string) => {
+  emits('on-userInput', text);
+};
 </script>
 
 <style scoped lang="scss">

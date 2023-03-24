@@ -11,7 +11,7 @@
       class="ipt"
     ></el-input>
     <div class="op-box">
-      <el-button class="btn" type="primary" size="default" @click="">提交</el-button>
+      <el-button class="btn" type="primary" size="default" @click="submit">提交</el-button>
     </div>
     
   </div>
@@ -21,8 +21,10 @@
 import { ref } from 'vue';
 
 const text = ref('');
-
-const submit = () => {};
+const emits = defineEmits(['on-submit'])
+const submit = () => {
+  emits('on-submit',text.value)
+};
 </script>
 
 <style scoped lang="scss">

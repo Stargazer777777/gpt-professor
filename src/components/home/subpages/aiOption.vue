@@ -41,7 +41,7 @@
                 v-model="tempFormData[item.key]"
                 :min="item.range?.start"
                 :max="item.range?.end"
-                :step="0.01"
+                :step="item.range?.step"
                 @change=""
               >
               </el-slider>
@@ -60,7 +60,7 @@
                 clearable
                 resize="none"
                 :autosize="{ minRows: 2, maxRows: 6 }"
-                :maxlength="2000"
+                :maxlength="32000"
                 show-word-limit
                 @change=""
               ></el-input>
@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { Option } from '@/stores/modules/chat';
+import type { Option } from '@/declare/common';
 
 type Props = {
   options: Option[];

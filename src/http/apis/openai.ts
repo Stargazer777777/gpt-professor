@@ -1,8 +1,13 @@
-import {openAiInstance2} from '..'
+import { OpenAIApi, Configuration } from '@/openai';
 
-export const listModel = ()=> {
-    return openAiInstance2({
-        method:'GET',
-        url:'https://api.openai.com/v1/models'
-    })
+class OpenAiManager {
+  openAiAPi: OpenAIApi = new OpenAIApi();
+
+  update(apiKey: string, organization: string) {
+    const configuration = new Configuration({ apiKey, organization });
+    this.openAiAPi = new OpenAIApi(configuration);
+    return this.openAiAPi;
+  }
 }
+
+export const openAiManager = new OpenAiManager();
