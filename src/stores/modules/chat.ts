@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import type { Option } from '@/declare/common';
 import { openAiManager } from '@/http/apis/openai';
 
@@ -76,7 +76,7 @@ export const useChatStore = defineStore('chat-store', () => {
     {
       name: '最大生成令牌数，设置-1表示无限',
       key: 'max_tokens',
-      type: 'slider',
+      type: 'number',
       range: { start: -1, end: 32000, step: 1 },
       default: -1,
     },
@@ -109,9 +109,40 @@ export const useChatStore = defineStore('chat-store', () => {
     },
   ];
   const formData = ref<Record<string, any>>({});
-  options.forEach((item) => {
-    formData.value[item.key] = item.default;
-  });
+
+  {
+    // 此代码块里面的内容用于对配置的本地存储和取出
+    let timer: any;
+    const chatOptionKeyName: string = 'chatOption';
+    const initFormData = () => {
+      const localChatOptionJson = localStorage.getItem(chatOptionKeyName);
+      let localChatOption: Record<string, any> = {};
+      if (localChatOptionJson) {
+        localChatOption = JSON.parse(localChatOptionJson);
+      }
+      options.forEach((item) => {
+        if (Object.hasOwn(localChatOption, item.key)) {
+          formData.value[item.key] = localChatOption[item.key];
+        } else {
+          formData.value[item.key] = item.default;
+        }
+      });
+    };
+    initFormData();
+    watch(
+      formData,
+      () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          localStorage.setItem(
+            chatOptionKeyName,
+            JSON.stringify(formData.value)
+          );
+        }, 1000);
+      },
+      { deep: true }
+    );
+  }
 
   const chatMessages = ref<ChatMessage[]>([]);
 

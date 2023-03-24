@@ -26,7 +26,6 @@
                 v-model="tempFormData[item.key]"
                 clearable
                 filterable
-                @change=""
               >
                 <el-option
                   v-for="option in item.options"
@@ -42,15 +41,23 @@
                 :min="item.range?.start"
                 :max="item.range?.end"
                 :step="item.range?.step"
-                @change=""
               >
               </el-slider>
+              <el-input-number
+                v-if="item.type === 'number'"
+                v-model="tempFormData[item.key]"
+                :min="item.range?.start"
+                :max="item.range?.end"
+                :step="item.range?.step"
+                :controls="true"
+                controls-position="both"
+              >
+              </el-input-number>
               <el-switch
                 v-if="item.type === 'switch'"
                 v-model="tempFormData[item.key]"
                 :active-value="true"
                 :inactive-value="false"
-                @change=""
               >
               </el-switch>
               <el-input
@@ -62,7 +69,6 @@
                 :autosize="{ minRows: 2, maxRows: 6 }"
                 :maxlength="32000"
                 show-word-limit
-                @change=""
               ></el-input>
             </el-form-item>
           </el-form>
@@ -78,17 +84,17 @@ import type { Option } from '@/declare/common';
 
 type Props = {
   options: Option[];
-  modelValue:Record<string, any>
+  modelValue: Record<string, any>;
 };
 const props = defineProps<Props>();
 
 const tempFormData = ref<Record<string, any>>({
-  ...props.modelValue
+  ...props.modelValue,
 });
 const emits = defineEmits(['update:modelValue']);
 
 watch(tempFormData.value, () => {
-  emits('update:modelValue',tempFormData.value)
+  emits('update:modelValue', tempFormData.value);
 });
 </script>
 
