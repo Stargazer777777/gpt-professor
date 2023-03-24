@@ -14,3 +14,8 @@ export type Types =
   | 'switch'
   | 'textarea'
   | 'number';
+
+  export type OperateAction = {
+    name: string;
+    key: string;
+  }

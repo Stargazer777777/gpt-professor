@@ -50,7 +50,6 @@
                 :max="item.range?.end"
                 :step="item.range?.step"
                 :controls="true"
-                controls-position="both"
               >
               </el-input-number>
               <el-switch

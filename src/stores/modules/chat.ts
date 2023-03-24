@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
-import type { Option } from '@/declare/common';
+import type { Option,OperateAction } from '@/declare/common';
 import { openAiManager } from '@/http/apis/openai';
 
 export interface RequestMessage {
@@ -95,23 +95,15 @@ export const useChatStore = defineStore('chat-store', () => {
       default: 0,
     },
   ];
-  const actionList: Array<{
-    name: string;
-    key: string;
-  }> = [
-    {
-      name: '清空',
-      key: 'clean',
-    },
+  const actionList: Array<OperateAction> = [
     {
       name: '新对话',
       key: 'new',
     },
   ];
   const formData = ref<Record<string, any>>({});
-
+  // 此代码块里面的内容用于对配置的本地存储和取出
   {
-    // 此代码块里面的内容用于对配置的本地存储和取出
     let timer: any;
     const chatOptionKeyName: string = 'chatOption';
     const initFormData = () => {

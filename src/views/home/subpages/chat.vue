@@ -7,13 +7,13 @@
       ></aiOperate>
     </div>
     <div class="frame">
-      <MessageFrame :chat-messages="store.chatMessages" @on-user-input="chat"></MessageFrame>
+      <MessageFrame
+        :chat-messages="store.chatMessages"
+        @on-user-input="chat"
+      ></MessageFrame>
     </div>
     <div class="option">
-      <aiOption
-        v-model="store.formData"
-        :options="store.options"
-      ></aiOption>
+      <aiOption v-model="store.formData" :options="store.options"></aiOption>
     </div>
   </div>
 </template>
@@ -26,12 +26,19 @@ import { useChatStore } from '@/stores/modules/chat';
 const store = useChatStore();
 
 const operateAct = (actionKey: string) => {
-  console.log(actionKey);
+  switch (actionKey) {
+    case 'new':
+      store.chatMessages = [];
+      break;
+
+    default:
+      break;
+  }
 };
 
-const chat = (text:string)=> {
-  store.chat(text)
-}
+const chat = (text: string) => {
+  store.chat(text);
+};
 </script>
 
 <style scoped lang="scss">
