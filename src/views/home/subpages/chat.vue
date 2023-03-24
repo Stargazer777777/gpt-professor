@@ -1,14 +1,18 @@
 <template>
   <div class="container">
     <div class="op-box">
-      <chatOperate :action-list="store.actionList" @on-act="operateAct"></chatOperate>
+      <chatOperate
+        :action-list="store.actionList"
+        @on-act="operateAct"
+      ></chatOperate>
     </div>
     <div class="frame">
-      <ChatFrame></ChatFrame>
+      <ChatFrame :chat-messages="store.chatMessages"></ChatFrame>
     </div>
     <div class="option">
       <ChatOption
         :options="store.options"
+        :form-data="store.formData"
         @on-form-update="updateFrom"
       ></ChatOption>
     </div>
@@ -21,14 +25,13 @@ import chatOperate from '@/components/home/subpages/chatOperate.vue';
 import ChatOption from '@/components/home/subpages/chatOption.vue';
 import { useChatStore } from '@/stores/modules/chat';
 const store = useChatStore();
-const updateFrom = (formData: Record<string, any>) => {
-  store.formData = formData;
-};
-const operateAct = (actionKey:string)=> {
-  console.log(actionKey);
-  
-}
 
+const updateFrom = (tempFormData: Record<string, any>) => {
+  store.formData = tempFormData;
+};
+const operateAct = (actionKey: string) => {
+  console.log(actionKey);
+};
 </script>
 
 <style scoped lang="scss">

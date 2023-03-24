@@ -2,13 +2,11 @@
   <div class="frame">
     <el-scrollbar>
       <div class="chat-content">
-        <SingleChat></SingleChat>
-        <SingleChat></SingleChat>
-        <SingleChat></SingleChat>
-        <SingleChat></SingleChat>
-        <SingleChat></SingleChat>
-        <SingleChat></SingleChat>
-        <SingleChat></SingleChat>
+        <SingleChat
+          v-for="(item, index) in chatMessages"
+          :chat-message="item"
+          :key="index"
+        ></SingleChat>
       </div>
     </el-scrollbar>
 
@@ -19,6 +17,12 @@
 <script setup lang="ts">
 import InputBox from './chatFrame/inputBox.vue';
 import SingleChat from './chatFrame/singleChat.vue';
+import type { ChatMessage } from '@/stores/modules/chat';
+
+type Props = {
+  chatMessages: ChatMessage[];
+};
+const props = defineProps<Props>();
 </script>
 
 <style scoped lang="scss">

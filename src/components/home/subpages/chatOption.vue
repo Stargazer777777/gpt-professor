@@ -9,7 +9,7 @@
       <template #default>
         <div class="card-content">
           <el-form
-            :model="formData"
+            :model="tempFormData"
             ref="form"
             label-width="200px"
             label-position="top"
@@ -19,11 +19,11 @@
             <el-form-item :label="item.name" v-for="item in options">
               <el-input
                 v-if="item.type === 'input'"
-                v-model="formData[item.key]"
+                v-model="tempFormData[item.key]"
               ></el-input>
               <el-select
                 v-if="item.type === 'select'"
-                v-model="formData[item.key]"
+                v-model="tempFormData[item.key]"
                 clearable
                 filterable
                 @change=""
@@ -38,7 +38,7 @@
               </el-select>
               <el-slider
                 v-if="item.type === 'slider'"
-                v-model="formData[item.key]"
+                v-model="tempFormData[item.key]"
                 :min="item.range?.start"
                 :max="item.range?.end"
                 :step="0.01"
@@ -47,7 +47,7 @@
               </el-slider>
               <el-switch
                 v-if="item.type === 'switch'"
-                v-model="formData[item.key]"
+                v-model="tempFormData[item.key]"
                 :active-value="true"
                 :inactive-value="false"
                 @change=""
@@ -55,7 +55,7 @@
               </el-switch>
               <el-input
                 v-if="item.type === 'textarea'"
-                v-model="formData[item.key]"
+                v-model="tempFormData[item.key]"
                 type="textarea"
                 clearable
                 resize="none"
@@ -78,21 +78,17 @@ import type { Option } from '@/stores/modules/chat';
 
 type Props = {
   options: Option[];
+  formData:Record<string, any>
 };
 const props = defineProps<Props>();
 
-const formData = ref<Record<string, any>>({});
-
-props.options.forEach((item) => {
-  formData.value[item.key] = item.default || null;
+const tempFormData = ref<Record<string, any>>({
+  ...props.formData
 });
-
 const emits = defineEmits(['on-formUpdate']);
 
-watch(formData.value, () => {
-  console.log('here');
-
-  emits('on-formUpdate', formData.value);
+watch(tempFormData.value, () => {
+  emits('on-formUpdate', tempFormData.value);
 });
 </script>
 

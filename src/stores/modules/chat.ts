@@ -15,6 +15,8 @@ export type Types = 'input' | 'select' | 'slider' | 'switch' | 'textarea';
 export type ChatMessage = {
   role: 'assistant' | 'user' | 'system';
   content: string;
+  status: boolean;
+  headPosition: 'left' | 'right';
 };
 export const useChatStore = defineStore('chat-store', () => {
   const options: Option[] = [
@@ -48,8 +50,21 @@ export const useChatStore = defineStore('chat-store', () => {
     formData.value[item.key] = item.default || null;
   });
 
-  const chatMessages = ref<ChatMessage[]>([]);
-  
+  const chatMessages = ref<ChatMessage[]>([
+    {
+      role: 'assistant',
+      content: 'hello',
+      status: true,
+      headPosition: 'left',
+    },
+    {
+      role: 'user',
+      content: 'hi',
+      status: true,
+      headPosition: 'right',
+    },
+  ]);
+
   return {
     formData,
     options,
