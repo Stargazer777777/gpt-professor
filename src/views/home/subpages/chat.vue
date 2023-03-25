@@ -8,6 +8,7 @@
     </div>
     <div class="frame">
       <MessageFrame
+        :showStatus="true"
         :chat-messages="store.chatMessages"
         @on-user-input="chat"
       ></MessageFrame>

@@ -6,6 +6,7 @@
           v-for="(item, index) in chatMessages"
           :chat-message="item"
           :key="index"
+          :showStatus="showStatus"
         ></SingleMessage>
       </div>
     </el-scrollbar>
@@ -21,6 +22,7 @@ import type { ChatMessage } from '@/stores/modules/chat';
 
 type Props = {
   chatMessages: ChatMessage[];
+  showStatus:boolean
 };
 const props = defineProps<Props>();
 

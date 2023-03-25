@@ -1,6 +1,7 @@
+import { ElMessage } from 'element-plus';
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
-import type { Option,OperateAction } from '@/declare/common';
+import type { Option, OperateAction } from '@/declare/common';
 import { openAiManager } from '@/http/apis/openai';
 
 export interface RequestMessage {
@@ -142,7 +143,7 @@ export const useChatStore = defineStore('chat-store', () => {
     chatMessages.value.push({
       role: 'user',
       content,
-      headPosition: 'left',
+      headPosition: 'right',
       status: true,
     });
   };
@@ -156,10 +157,12 @@ export const useChatStore = defineStore('chat-store', () => {
       });
     }
     chatMessages.value.forEach((item) => {
-      messages.push({
-        role: item.role,
-        content: item.content,
-      });
+      if (item.status) {
+        messages.push({
+          role: item.role,
+          content: item.content,
+        });
+      }
     });
     return messages;
   };
@@ -175,16 +178,78 @@ export const useChatStore = defineStore('chat-store', () => {
     return {
       ...formDataCp,
       messages: genRequestMessages(),
-      stream: false,
+      stream: true,
     };
+  };
+
+  const setMessageStatusFalseFromEndToLastUserMessage = () => {
+    for (let i = chatMessages.value.length - 1; i >= 0; i--) {
+      chatMessages.value[i].status = false;
+      if (chatMessages.value[i].role === 'user') break;
+    }
+  };
+
+  const getChatStream = async () => {
+    try {
+      const stream = await openAiManager.streamApi(
+        'chat',
+        { ...genRequestBody() },
+        {
+          apiKey: openAiManager.apiKey.value,
+        }
+      );
+      return stream;
+    } catch (err) {
+      setMessageStatusFalseFromEndToLastUserMessage();
+      throw err;
+    }
+  };
+
+  const createAssitantMessageFromStream = async (
+    stream: ReadableStream<Uint8Array>
+  ) => {
+    try {
+      const reader = stream.getReader();
+      const decoder = new TextDecoder();
+      let done = true;
+      let partMessage: Record<string, any> = {};
+      let chunk: ReadableStreamReadResult<Uint8Array>;
+      const streamWaitTime = 5000;
+      chatMessages.value.push({
+        role: 'assistant',
+        headPosition: 'left',
+        status: true,
+        content: '',
+      });
+      do {
+        let timer = setTimeout(async () => {
+          ElMessage.error('似乎出现了网络故障，或你暂时不可使用改模型');
+          reader.releaseLock(); // 释放锁
+          await stream.cancel('timeout'); // 关闭流
+          throw new Error('似乎出现了网络故障，或你暂时不可使用改模型');
+        }, streamWaitTime);
+        chunk = await reader.read();
+        clearTimeout(timer);
+        done = chunk.done;
+        partMessage = {};
+        if (chunk.value) {
+          partMessage = JSON.parse(decoder.decode(chunk.value));
+        }
+        if (Object.hasOwn(partMessage, 'content')) {
+          chatMessages.value[chatMessages.value.length - 1].content +=
+            partMessage['content'];
+        }
+      } while (!done);
+    } catch (err) {
+      setMessageStatusFalseFromEndToLastUserMessage();
+      throw err;
+    }
   };
 
   const chat = async (content: string) => {
     appendUserMessage(content);
-    const res = await openAiManager.openAiAPi.createChatCompletion({
-      ...genRequestBody(),
-    });
-    console.log(res);
+    const stream = await getChatStream();
+    await createAssitantMessageFromStream(stream);
   };
 
   return {

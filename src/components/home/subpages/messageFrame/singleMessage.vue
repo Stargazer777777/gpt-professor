@@ -3,7 +3,18 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <div class="role">{{ chatMessage.role }}</div>
+          <div class="role header-item">{{ chatMessage.role }}</div>
+          <div class="status header-item">
+            <el-switch
+              v-if="showStatus"
+              v-model="chatMessage.status"
+              class="ml-2"
+              style="
+                --el-switch-on-color: #13ce66;
+                --el-switch-off-color: #ff4949;
+              "
+            />
+          </div>
         </div>
       </template>
       <template #default>
@@ -18,6 +29,7 @@ import type { ChatMessage } from '@/stores/modules/chat';
 import { computed } from 'vue';
 type Props = {
   chatMessage: ChatMessage;
+  showStatus: boolean;
 };
 
 const props = defineProps<Props>();
@@ -32,6 +44,10 @@ const position = computed(() => {
   .card-header {
     display: flex;
     justify-content: v-bind(position);
+    align-items: center;
+    .header-item {
+      margin: 0 5px;
+    }
     .role {
       padding: 5px 10px;
       background-color: skyblue;

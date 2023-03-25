@@ -1,10 +1,12 @@
 import { OpenAIApi, Configuration } from '@/openai';
 import { ref } from 'vue';
+import {OpenAI as streamOpenAi,} from 'openai-streams'
 
 class OpenAiManager {
   apiKey = ref<string>('');
   organization = ref<string>('');
   openAiAPi: OpenAIApi = new OpenAIApi();
+  streamApi = streamOpenAi
   private storageKey: string = 'openAiConfig';
 
   constructor() {
@@ -30,6 +32,7 @@ class OpenAiManager {
     this.openAiAPi = new OpenAIApi(configuration);
     return this.openAiAPi;
   }
+
 }
 
 export const openAiManager = new OpenAiManager();
