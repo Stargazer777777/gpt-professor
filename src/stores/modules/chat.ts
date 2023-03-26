@@ -251,10 +251,10 @@ export const useChatStore = defineStore('chat-store', () => {
       });
       do {
         let timer = setTimeout(async () => {
-          ElMessage.error('似乎出现了网络故障，或你暂时不可使用改模型');
+          // ElMessage.error('似乎出现了网络故障，或你暂时不可使用改模型');
           reader.releaseLock(); // 释放锁
           await stream.cancel('timeout'); // 关闭流
-          throw new Error('似乎出现了网络故障，或你暂时不可使用改模型');
+          throw new Error('stream read error');
         }, streamWaitTime);
         chunk = await reader.read();
         clearTimeout(timer);
@@ -268,7 +268,18 @@ export const useChatStore = defineStore('chat-store', () => {
             partMessage['content'];
         }
       } while (!done);
+      ElMessage.success('done!')
     } catch (err) {
+      if (err instanceof Error) {
+        if ((err as any).type === 'MAX_TOKENS') {
+          ElMessage.warning('达到最大token');
+          ElNotification({
+            title: 'stream error',
+            message: err.message,
+          });
+          return;
+        }
+      }
       throw err;
     }
   };
