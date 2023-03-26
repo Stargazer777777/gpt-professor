@@ -15,6 +15,7 @@ import Menu from '@/components/home/menu.vue';
 <style scoped lang="scss">
 .container {
   min-height: 500px;
+  min-width: 700px;
   .box {
     padding: 20px;
   }

@@ -55,6 +55,12 @@ export const useChatStore = defineStore('chat-store', () => {
       default: '',
     },
     {
+      name: '是否启用流传输',
+      key: 'stream',
+      type: 'switch',
+      default: true,
+    },
+    {
       name: 'temperature(默认为1)不建议和top_p一起改',
       key: 'temperature',
       type: 'slider',
@@ -100,6 +106,10 @@ export const useChatStore = defineStore('chat-store', () => {
     {
       name: '新对话',
       key: 'new',
+    },
+    {
+      name: '根据启用的信息生成',
+      key: 'reGen',
     },
   ];
   const formData = ref<Record<string, any>>({});
@@ -178,7 +188,6 @@ export const useChatStore = defineStore('chat-store', () => {
     return {
       ...formDataCp,
       messages: genRequestMessages(),
-      stream: true,
     };
   };
 
@@ -200,7 +209,6 @@ export const useChatStore = defineStore('chat-store', () => {
       );
       return stream;
     } catch (err) {
-      setMessageStatusFalseFromEndToLastUserMessage();
       throw err;
     }
   };
@@ -241,6 +249,36 @@ export const useChatStore = defineStore('chat-store', () => {
         }
       } while (!done);
     } catch (err) {
+      throw err;
+    }
+  };
+
+  const createAssitantMessageNotStream = async () => {
+    try {
+      const res = await openAiManager.openAiAPi.createChatCompletion({
+        ...genRequestBody(),
+      });
+      const newAssitantMessage: ChatMessage = {
+        role: 'assistant',
+        headPosition: 'left',
+        content: res.data.choices[0].message!.content,
+        status: true,
+      };
+      chatMessages.value.push(newAssitantMessage);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const createAssistantMessage = async () => {
+    try {
+      if (formData.value['stream']) {
+        const stream = await getChatStream();
+        await createAssitantMessageFromStream(stream);
+      } else {
+        await createAssitantMessageNotStream();
+      }
+    } catch (err) {
       setMessageStatusFalseFromEndToLastUserMessage();
       throw err;
     }
@@ -248,8 +286,7 @@ export const useChatStore = defineStore('chat-store', () => {
 
   const chat = async (content: string) => {
     appendUserMessage(content);
-    const stream = await getChatStream();
-    await createAssitantMessageFromStream(stream);
+    await createAssistantMessage();
   };
 
   return {
@@ -258,5 +295,6 @@ export const useChatStore = defineStore('chat-store', () => {
     actionList,
     chatMessages,
     chat,
+    createAssistantMessage
   };
 });

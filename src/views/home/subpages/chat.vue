@@ -31,7 +31,9 @@ const operateAct = (actionKey: string) => {
     case 'new':
       store.chatMessages = [];
       break;
-
+    case 'reGen':
+      store.createAssistantMessage();
+      break;
     default:
       break;
   }
