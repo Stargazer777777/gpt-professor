@@ -2,6 +2,7 @@
   <div class="container">
     <div class="op-box">
       <aiOperate
+        title="操作"
         :action-list="store.actionList"
         @on-act="operateAct"
       ></aiOperate>
@@ -14,7 +15,7 @@
       ></MessageFrame>
     </div>
     <div class="option">
-      <aiOption v-model="store.formData" :options="store.options"></aiOption>
+      <aiOption v-model="store.formData" :options="store.options" title="选项"></aiOption>
     </div>
   </div>
 </template>

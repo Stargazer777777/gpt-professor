@@ -15,10 +15,21 @@
               "
             />
           </div>
+          <div class="edit header-item">
+            <el-radio-group v-model="mdModel">
+              <el-radio label="preview" size="default">预览</el-radio>
+              <el-radio label="edit" size="default">编辑</el-radio>
+              <el-radio label="editable" size="default">编辑预览</el-radio>
+            </el-radio-group>
+          </div>
         </div>
       </template>
       <template #default>
-        <div class="content">{{ chatMessage.content }}</div>
+        <v-md-editor
+          class="content"
+          :mode="mdModel"
+          v-model="chatMessage.content"
+        ></v-md-editor>
       </template>
     </el-card>
   </div>
@@ -26,11 +37,13 @@
 
 <script setup lang="ts">
 import type { ChatMessage } from '@/stores/modules/chat';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 type Props = {
   chatMessage: ChatMessage;
   showStatus: boolean;
 };
+
+const mdModel = ref<'edit' | 'editable' | 'preview'>('preview');
 
 const props = defineProps<Props>();
 const position = computed(() => {

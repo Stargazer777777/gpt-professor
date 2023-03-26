@@ -3,7 +3,7 @@
     <el-card shadow="always" class="card">
       <template #header>
         <div class="card-header">
-          <div class="title">title</div>
+          <div class="title">{{ title }}</div>
         </div>
       </template>
       <template #default>
@@ -86,6 +86,7 @@ import type { Option } from '@/declare/common';
 type Props = {
   options: Option[];
   modelValue: Record<string, any>;
+  title?:string
 };
 const props = defineProps<Props>();
 const tempFormData = ref<Record<string, any>>({

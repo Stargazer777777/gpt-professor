@@ -3,7 +3,7 @@
     <el-card shadow="always" class="card">
       <template #header>
         <div class="card-header">
-          <div class="title">title</div>
+          <div class="title">{{ title }}</div>
         </div>
       </template>
       <template #default>
@@ -32,6 +32,7 @@ type Action = {
 
 type Props = {
   actionList: Action[];
+  title?:string
 };
 const props = defineProps<Props>();
 
