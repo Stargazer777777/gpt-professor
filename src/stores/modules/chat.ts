@@ -1,8 +1,14 @@
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElNotification } from 'element-plus';
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 import type { Option, OperateAction } from '@/declare/common';
 import { openAiManager } from '@/http/apis/openai';
+import {
+  axiosRespnseErrorHandler,
+  closeMessage,
+  showLoadingMessage,
+} from '@/http/index';
+import { AxiosError } from 'axios';
 
 export interface RequestMessage {
   role: 'assistant' | 'user' | 'system';
@@ -199,6 +205,7 @@ export const useChatStore = defineStore('chat-store', () => {
   };
 
   const getChatStream = async () => {
+    const messageHandler = showLoadingMessage('请稍等');
     try {
       const stream = await openAiManager.streamApi(
         'chat',
@@ -209,7 +216,20 @@ export const useChatStore = defineStore('chat-store', () => {
       );
       return stream;
     } catch (err) {
+      if (err instanceof Error) {
+        if (err instanceof AxiosError) {
+          return axiosRespnseErrorHandler(err);
+        }
+        ElMessage.error(err.message);
+        ElNotification({
+          title: 'stream error',
+          message: '如果你想知道确切的原因，最好不要使用流模式',
+          duration: 0,
+        });
+      }
       throw err;
+    } finally {
+      closeMessage(messageHandler);
     }
   };
 
@@ -295,6 +315,6 @@ export const useChatStore = defineStore('chat-store', () => {
     actionList,
     chatMessages,
     chat,
-    createAssistantMessage
+    createAssistantMessage,
   };
 });
