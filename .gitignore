@@ -12,7 +12,6 @@ pnpm-lock.yaml
 tmp
 .DS_Store
 
-dist
 dist-ssr
 coverage
 *.local
