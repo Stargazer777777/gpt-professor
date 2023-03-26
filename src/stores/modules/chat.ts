@@ -18,6 +18,11 @@ export interface RequestMessage {
 export interface ChatMessage extends RequestMessage {
   status: boolean;
   headPosition: 'left' | 'right';
+  usage?: {
+    completion_tokens: number;
+    prompt_tokens: number;
+    total_tokens: number;
+  };
 }
 
 export const useChatStore = defineStore('chat-store', () => {
@@ -268,7 +273,7 @@ export const useChatStore = defineStore('chat-store', () => {
             partMessage['content'];
         }
       } while (!done);
-      ElMessage.success('done!')
+      ElMessage.success('done!');
     } catch (err) {
       if (err instanceof Error) {
         if ((err as any).type === 'MAX_TOKENS') {
@@ -294,6 +299,7 @@ export const useChatStore = defineStore('chat-store', () => {
         headPosition: 'left',
         content: res.data.choices[0].message!.content,
         status: true,
+        usage: res.data.usage,
       };
       chatMessages.value.push(newAssitantMessage);
     } catch (err) {

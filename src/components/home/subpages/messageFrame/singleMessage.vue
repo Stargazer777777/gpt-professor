@@ -22,6 +22,22 @@
               <el-radio label="editable" size="default">编辑预览</el-radio>
             </el-radio-group>
           </div>
+          <div class="usage header-item" v-if="chatMessage.usage">
+            <div class="usage-item">
+              <span class="name">参数使用：</span>
+              <span class="value">{{ chatMessage.usage.prompt_tokens }}</span>
+            </div>
+            <div class="usage-item">
+              <span class="name">结果使用：</span>
+              <span class="value">{{
+                chatMessage.usage.completion_tokens
+              }}</span>
+            </div>
+            <div class="usage-item">
+              <span class="name">total：</span>
+              <span class="value">{{ chatMessage.usage.total_tokens }}</span>
+            </div>
+          </div>
         </div>
       </template>
       <template #default>
@@ -66,6 +82,25 @@ const position = computed(() => {
       background-color: skyblue;
       border-radius: 10px;
       color: #fff;
+    }
+    .usage {
+      display: flex;
+      border: 1px solid #409eff;
+      border-radius: 5px;
+      .usage-item {
+        margin: 0 5px;
+        padding: 5px;
+        span {
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .value {
+          background-color: skyblue;
+          border-radius: 5px;
+          color: #fff;
+          padding: 0 5px;
+        }
+      }
     }
   }
 }
