@@ -1,17 +1,25 @@
 <template>
   <div class="frame">
-    <el-scrollbar ref="scrollRef">
-      <div class="chat-content" ref="chatContentRef">
-        <SingleMessage
-          v-for="(item, index) in chatMessages"
-          :chat-message="item"
-          :key="index"
-          :showStatus="showStatus"
-        ></SingleMessage>
-      </div>
-    </el-scrollbar>
+    <div class="chat-content" ref="chatContentRef">
+      <SingleMessage
+        v-for="(item, index) in chatMessages"
+        :chat-message="item"
+        :index="index"
+        :key="index"
+        :showStatus="showStatus"
+        @on-click-close="handleCloseMessage"
+      ></SingleMessage>
+    </div>
 
-    <InputBox @on-submit="handleUserInput"></InputBox>
+    <el-affix position="bottom" :offset="20">
+      <div class="input-box">
+        <InputBox
+          @on-submit="handleUserInput"
+          :action-list="actionList"
+          @on-operate-act="operateActHandler"
+        ></InputBox>
+      </div>
+    </el-affix>
   </div>
 </template>
 
@@ -20,33 +28,44 @@ import InputBox from './messageFrame/inputBox.vue';
 import SingleMessage from './messageFrame/singleMessage.vue';
 import type { ChatMessage } from '@/stores/modules/chat';
 import { computed, ref, watch } from 'vue';
-import { ElScrollbar } from 'element-plus';
+
+import type { OperateAction } from '@/declare/common';
 
 type Props = {
   chatMessages: ChatMessage[];
   showStatus: boolean;
+  actionList: Array<OperateAction>;
 };
 const props = defineProps<Props>();
 
-const scrollRef = ref<InstanceType<typeof ElScrollbar>>();
-const chatContentRef = ref<HTMLDivElement>()
+// const scrollRef = ref<InstanceType<typeof ElScrollbar>>();
+const chatContentRef = ref<HTMLDivElement>();
 const messageAmount = computed(() => {
   return props.chatMessages.length;
 });
 
 watch(messageAmount, (newVal, oldVal) => {
   if (newVal > oldVal) {
-    // console.log(scrollRef.value?.$el.offsetHeight,'scroll');
-    // console.log(chatContentRef.value?.offsetHeight,'div');
-    
-    scrollRef.value?.scrollTo(0, chatContentRef.value?.offsetHeight);
+    window.scrollTo(0, chatContentRef.value?.offsetHeight || 0);
   }
 });
 
-const emits = defineEmits(['on-userInput']);
+const emits = defineEmits([
+  'on-userInput',
+  'on-operateAct',
+  'on-clickCloseSingleMessage',
+]);
 
 const handleUserInput = (text: string) => {
   emits('on-userInput', text);
+};
+
+const operateActHandler = (key: string) => {
+  emits('on-operateAct', key);
+};
+
+const handleCloseMessage = (index: number) => {
+  emits('on-clickCloseSingleMessage', index);
 };
 </script>
 
@@ -59,6 +78,9 @@ const handleUserInput = (text: string) => {
   .chat-content {
     flex: 1;
     padding-bottom: 50%;
+  }
+  .input-box {
+    padding: 0 10%;
   }
 }
 </style>

@@ -1,28 +1,26 @@
 <template>
   <div class="container">
-    <div class="op-box">
-      <aiOperate
-        title="操作"
-        :action-list="store.actionList"
-        @on-act="operateAct"
-      ></aiOperate>
+    <el-affix :offset="60">
+      <div class="option">
+      <aiOption v-model="store.formData" :options="store.options" title="选项"></aiOption>
     </div>
+  </el-affix>
+    
     <div class="frame">
       <MessageFrame
         :showStatus="true"
         :chat-messages="store.chatMessages"
+        :action-list="store.actionList"
         @on-user-input="chat"
+        @on-operate-act="operateAct"
+        @on-click-close-single-message="deleteMessageByIndex"
       ></MessageFrame>
-    </div>
-    <div class="option">
-      <aiOption v-model="store.formData" :options="store.options" title="选项"></aiOption>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import MessageFrame from '@/components/home/subpages/messageFrame.vue';
-import aiOperate from '@/components/home/subpages/Operate.vue';
 import aiOption from '@/components/home/subpages/aiOption.vue';
 import { useChatStore } from '@/stores/modules/chat';
 const store = useChatStore();
@@ -40,6 +38,10 @@ const operateAct = (actionKey: string) => {
   }
 };
 
+const deleteMessageByIndex = (index:number)=> {
+  store.chatMessages.splice(index,1)
+}
+
 const chat = (text: string) => {
   store.chat(text);
 };
@@ -49,18 +51,12 @@ const chat = (text: string) => {
 .container {
   display: flex;
   justify-content: center;
-  .op-box {
-    flex: 1;
-    padding: 20px;
-  }
   .frame {
-    flex: 2;
-    height: calc(100vh - 100px);
-    min-height: 500px;
+    flex: 1;
+    min-height: 90vh;
   }
   .option {
-    flex: 1;
-    padding: 20px;
+    padding:0 20px;
   }
 }
 </style>

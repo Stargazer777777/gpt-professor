@@ -11,7 +11,11 @@
       class="ipt"
     ></el-input>
     <div class="op-box">
-      <el-button class="btn" :disabled="submitDisable" type="primary" size="default" @click="submit">提交</el-button>
+      <div class="optional-operate">
+        <el-button type="primary" plain size="default" @click="emits('on-operateAct',item.key)" v-for="item in actionList">{{ item.name }}</el-button>
+        
+      </div>
+      <el-button class="submit" :disabled="submitDisable" type="primary" size="default" @click="submit">提交</el-button>
     </div>
     
   </div>
@@ -20,12 +24,18 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import {ElMessage} from 'element-plus'
+import type { OperateAction } from '@/declare/common';
+
+type Props = {
+  actionList:Array<OperateAction>
+}
+const props = defineProps<Props>()
 
 const text = ref('');
 const submitDisable = computed(()=> {
   return text.value==''
 })
-const emits = defineEmits(['on-submit'])
+const emits = defineEmits(['on-submit','on-operateAct'])
 const submit = () => {
   if(text.value!='') {
     emits('on-submit',text.value)
@@ -42,8 +52,9 @@ const submit = () => {
 .box {
   .op-box {
     display: flex;
-    justify-content: flex-end;
-    
+    .optional-operate {
+      flex: 1;
+    }
   }
 }
 </style>

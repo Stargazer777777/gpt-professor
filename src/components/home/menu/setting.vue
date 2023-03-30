@@ -24,6 +24,7 @@
 <script lang="ts" setup>
 import { openAiManager } from '@/http/apis/openai';
 import { ElMessage } from 'element-plus';
+import { Setting } from '@element-plus/icons-vue';
 const hidePopoverHandler = () => {
   openAiManager.update();
   ElMessage.success('设置更新成功');

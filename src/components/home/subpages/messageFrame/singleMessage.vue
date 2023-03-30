@@ -1,5 +1,8 @@
 <template>
   <div class="box">
+    <el-icon class="close" :size="20" @click="emits('on-clickClose', index)">
+      <Close />
+    </el-icon>
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
@@ -54,9 +57,12 @@
 <script setup lang="ts">
 import type { ChatMessage } from '@/stores/modules/chat';
 import { computed, ref } from 'vue';
+import { Close } from '@element-plus/icons-vue';
+import { emit } from 'process';
 type Props = {
   chatMessage: ChatMessage;
   showStatus: boolean;
+  index: number;
 };
 
 const mdModel = ref<'edit' | 'editable' | 'preview'>('preview');
@@ -65,11 +71,26 @@ const props = defineProps<Props>();
 const position = computed(() => {
   return props.chatMessage.headPosition;
 });
+
+const emits = defineEmits(['on-clickClose']);
 </script>
 
 <style scoped lang="scss">
 .box {
+  position: relative;
   margin: 20px;
+  .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 5;
+    box-shadow: 0 0 2px rgba($color: #000000, $alpha: 0.3);
+    cursor: pointer;
+    &:hover {
+      color: #539cfe;
+      box-shadow: 0 0 5px rgba($color: #000000, $alpha: 0.3);
+    }
+  }
   .card-header {
     display: flex;
     justify-content: v-bind(position);
