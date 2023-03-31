@@ -80,7 +80,8 @@ const handleCloseMessage = (index: number) => {
     padding-bottom: 50%;
   }
   .input-box {
-    padding: 0 10%;
+    margin: 0 auto;
+    width: 80%;
   }
 }
 </style>
