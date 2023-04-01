@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import InputBox from './messageFrame/inputBox.vue';
 import SingleMessage from './messageFrame/singleMessage.vue';
-import type { ChatMessage } from '@/stores/modules/chat';
+import type { ChatMessage } from '@/declare/common';
 import { computed, ref, watch } from 'vue';
 
 import type { OperateAction } from '@/declare/common';

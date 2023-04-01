@@ -21,18 +21,21 @@
                 <el-input
                   v-if="item.type === 'input'"
                   v-model="tempFormData[item.key]"
+                  :disabled="item.disabled"
                 ></el-input>
                 <el-select
                   v-if="item.type === 'select'"
                   v-model="tempFormData[item.key]"
                   clearable
                   filterable
+                  :disabled="item.disabled"
                 >
                   <el-option
                     v-for="option in item.options"
                     :key="option.value"
                     :label="option.name"
                     :value="option.value"
+                    :disabled="item.disabled"
                   >
                   </el-option>
                 </el-select>
@@ -42,6 +45,7 @@
                   :min="item.range?.start"
                   :max="item.range?.end"
                   :step="item.range?.step"
+                  :disabled="item.disabled"
                 >
                 </el-slider>
                 <el-input-number
@@ -51,6 +55,7 @@
                   :max="item.range?.end"
                   :step="item.range?.step"
                   :controls="true"
+                  :disabled="item.disabled"
                 >
                 </el-input-number>
                 <el-switch
@@ -58,6 +63,7 @@
                   v-model="tempFormData[item.key]"
                   :active-value="true"
                   :inactive-value="false"
+                  :disabled="item.disabled"
                 >
                 </el-switch>
                 <el-input
@@ -69,6 +75,7 @@
                   :autosize="{ minRows: 2, maxRows: 6 }"
                   :maxlength="32000"
                   show-word-limit
+                  :disabled="item.disabled"
                 ></el-input>
               </el-form-item>
             </el-form>

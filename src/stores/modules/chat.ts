@@ -1,6 +1,6 @@
 import { ElMessage, ElNotification } from 'element-plus';
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import type { Option, OperateAction } from '@/declare/common';
 import { openAiManager } from '@/http/apis/openai';
 import {
@@ -10,23 +10,10 @@ import {
 } from '@/http/index';
 import { AxiosError } from 'axios';
 
-export interface RequestMessage {
-  role: 'assistant' | 'user' | 'system';
-  content: string;
-}
-
-export interface ChatMessage extends RequestMessage {
-  status: boolean;
-  headPosition: 'left' | 'right';
-  usage?: {
-    completion_tokens: number;
-    prompt_tokens: number;
-    total_tokens: number;
-  };
-}
+import type { RequestMessage, ChatMessage } from '@/declare/common';
 
 export const useChatStore = defineStore('chat-store', () => {
-  const options: Option[] = [
+  const options = reactive<Option[]>([
     {
       name: 'model',
       key: 'model',
@@ -112,7 +99,7 @@ export const useChatStore = defineStore('chat-store', () => {
       range: { start: -2, end: 2, step: 0.1 },
       default: 0,
     },
-  ];
+  ]);
   const actionList: Array<OperateAction> = [
     {
       name: '新对话',

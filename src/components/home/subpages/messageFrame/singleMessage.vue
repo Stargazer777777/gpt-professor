@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ChatMessage } from '@/stores/modules/chat';
+import type { ChatMessage } from '@/declare/common';
 import { computed, ref } from 'vue';
 import { Close } from '@element-plus/icons-vue';
 import { emit } from 'process';

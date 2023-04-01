@@ -22,6 +22,10 @@ const router = createRouter({
           component: () => import('@/views/home/subpages/chat.vue'),
         },
         {
+          path:'image',
+          component:()=>import('@/views/home/subpages/image.vue')
+        },
+        {
           path: 'help',
           component: () => import('@/views/home/subpages/help.vue'),
         },
