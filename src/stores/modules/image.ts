@@ -49,6 +49,10 @@ export const useImageStore = defineStore('image-store', () => {
   ]);
   const actionList: Array<OperateAction> = [
     {
+      name: '清空',
+      key: 'clear',
+    },
+    {
       name: '重新生成',
       key: 'reGen',
     },
@@ -99,7 +103,7 @@ export const useImageStore = defineStore('image-store', () => {
     });
   };
 
-  const genRequestBody = (prompt:string): any => {
+  const genRequestBody = (prompt: string): any => {
     const formDataCp = {
       ...formData.value,
     };
@@ -117,7 +121,7 @@ export const useImageStore = defineStore('image-store', () => {
     }
   };
 
-  const createImage = async (prompt:string) => {
+  const createImage = async (prompt: string) => {
     try {
       const res = await openAiManager.openAiAPi.createImage({
         ...genRequestBody(prompt),
@@ -136,19 +140,23 @@ export const useImageStore = defineStore('image-store', () => {
     }
   };
 
-  const genImage = async (prompt?:string) => {
+  const genImage = async (prompt?: string) => {
     try {
       if (formData.value['mode'] === 'create') {
-        if(!prompt) {
-            prompt = (chatMessages.value as any).findLast((message:ChatMessage)=> {
-                return message.role==='user'
-            }).content
+        if (!prompt) {
+          prompt = (chatMessages.value as any).findLast(
+            (message: ChatMessage) => {
+              return message.role === 'user';
+            }
+          ).content;
         }
-        if(!prompt) {
-            ElMessage.warning('还没有任何输入')
-            return
+        if (!prompt) {
+          ElMessage.warning('还没有任何输入');
+          return;
         }
         await createImage(prompt);
+      } else {
+        ElMessage.warning('开发中');
       }
     } catch (err) {
       setMessageStatusFalseFromEndToLastUserMessage();

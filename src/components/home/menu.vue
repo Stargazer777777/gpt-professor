@@ -9,7 +9,7 @@
       <div class="left">
         <div class="logo">GTP-Pro</div>
         <el-menu-item index="/home/chat" key="chat">Chat</el-menu-item>
-        <el-menu-item index="/home/image" key="chat">image</el-menu-item>
+        <el-menu-item index="/home/image" key="chat">Image</el-menu-item>
         <el-menu-item index="/home/help" key="help">帮助</el-menu-item>
       </div>
       <div class="right">
