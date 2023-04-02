@@ -13,13 +13,12 @@ git init
 git add .
 git commit -m 'deploy'
 
-git remote add origin git@github.com:Stargazer777777/gpt-professor.git
 git branch -m page
 
 # 如果你要部署在 https://<USERNAME>.github.io
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
 
 # 如果你要部署在 https://<USERNAME>.github.io/<REPO>
-git push origin -f page
+git push git@github.com:Stargazer777777/gpt-professor.git -f page
 
 cd -

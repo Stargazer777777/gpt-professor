@@ -52,7 +52,9 @@ const emits = defineEmits(['on-submit', 'on-operateAct']);
 const submit = () => {
   if (text.value != '') {
     emits('on-submit', text.value);
-    text.value = '';
+    setTimeout(() => {
+      text.value = '';
+    });
   } else {
     ElMessage.error('请输入内容');
   }
