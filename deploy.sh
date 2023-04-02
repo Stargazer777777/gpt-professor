@@ -1,5 +1,4 @@
 # 发生任何错误时终止
-set -e
 
 # 构建
 npm run build-only
