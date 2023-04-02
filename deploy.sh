@@ -21,6 +21,6 @@ git branch -m page
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
 
 # 如果你要部署在 https://<USERNAME>.github.io/<REPO>
-git push -f origin page
+git push origin -f page
 
 cd -
