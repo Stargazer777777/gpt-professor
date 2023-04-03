@@ -109,6 +109,10 @@ export const useChatStore = defineStore('chat-store', () => {
       name: '根据启用的信息生成',
       key: 'reGen',
     },
+    {
+      name: '历史记录',
+      key: 'history',
+    },
   ];
   const formData = ref<Record<string, any>>({});
   // 此代码块里面的内容用于对配置的本地存储和取出

@@ -45,6 +45,9 @@ const operateAct = (actionKey: string) => {
     case 'reGen':
       store.createAssistantMessage();
       break;
+    case 'history':
+      historyRef.value?.openHistory();
+      break;
     default:
       break;
   }

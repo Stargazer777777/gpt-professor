@@ -2,19 +2,80 @@
   <el-drawer
     :title="title"
     v-model="isShow"
-    :lock-scroll="false"
+    :lock-scroll="true"
     direction="rtl"
-    size="30%"
-    :destroy-on-close="true"
+    size="20%"
+    :destroy-on-close="false"
     :show-close="true"
     :wrapperClosable="true"
+    :modal="true"
+    :append-to-body="false"
   >
+    <template #header>
+      <el-row :gutter="20" align="center" class="header">
+        <el-col :span="6" :offset="0"> </el-col>
+        <el-col :span="6" :offset="10">
+          <el-popconfirm title="Sure?" @confirm="clearMessageGroups">
+            <template #reference>
+              <el-button
+                type="danger"
+                size="default"
+                :icon="Delete"
+                :disabled="messageGroups.length === 0"
+                >清空</el-button
+              >
+            </template>
+          </el-popconfirm>
+        </el-col>
+      </el-row>
+    </template>
+    <template #default>
+      <div class="list">
+        <el-scrollbar>
+          <el-empty description="None" v-if="messageGroups.length === 0" />
+          <el-row>
+            <el-col
+              :span="24"
+              v-for="item in reversedMessageGroups"
+              :key="item.id"
+            >
+              <el-card
+                :class="[
+                  item.id === currentMessageGroup?.id ? 'history-using' : '',
+                  'history-item',
+                ]"
+                shadow="hover"
+                @click="switchCurrentMessageGroup(item.id)"
+              >
+                <el-row justify="space-between">
+                  <el-col :span="12" :offset="0">{{ item.title }}</el-col>
+                  <el-col :span="11" :offset="0" class="date">{{
+                    moment(parseInt(item.id)).format('lll')
+                  }}</el-col>
+                  <el-col :span="1" :offset="0" class="del">
+                    <el-button
+                      type="danger"
+                      size="small"
+                      :icon="Delete"
+                      circle
+                      @click="delMessageGroup(item.id)"
+                    />
+                  </el-col>
+                </el-row>
+              </el-card>
+            </el-col>
+          </el-row>
+        </el-scrollbar>
+      </div>
+    </template>
   </el-drawer>
 </template>
 
 <script lang="ts" setup>
 import type { ChatMessage, MessageGroup } from '@/declare/common';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
+import moment from 'moment';
+import { Delete } from '@element-plus/icons-vue';
 
 type Props = {
   title?: string;
@@ -24,6 +85,9 @@ type Props = {
 const props = defineProps<Props>();
 const emit = defineEmits(['update:modelValue']);
 const isShow = ref<boolean>(false);
+const openHistory = () => {
+  isShow.value = true;
+};
 
 const getStorageMessageGroups = (): MessageGroup[] => {
   const jsonValue = localStorage.getItem(props.storageKey);
@@ -51,15 +115,40 @@ const newMessageGroup = (title: string): MessageGroup => {
 };
 
 const messageGroups = ref<MessageGroup[]>(getStorageMessageGroups());
+const reversedMessageGroups = computed(() => {
+  return messageGroups.value.reverse();
+});
 const currentMessageGroup = ref<MessageGroup>();
+
+const switchCurrentMessageGroup = (id: string) => {
+  currentMessageGroup.value = messageGroups.value.find(
+    (item) => item.id === id
+  );
+  emit('update:modelValue', currentMessageGroup.value?.messages);
+};
+
+const delMessageGroup = (id: string) => {
+  messageGroups.value.splice(
+    messageGroups.value.findIndex((item) => item.id === id),
+    1
+  );
+  if (id === currentMessageGroup.value?.id) {
+    currentMessageGroup.value = undefined;
+  }
+  emit('update:modelValue', []);
+};
+
+const clearMessageGroups = () => {
+  messageGroups.value = [];
+  currentMessageGroup.value = undefined;
+  emit('update:modelValue', []);
+};
 
 let updateTimer: any;
 const waitTime = 1000;
 watch(
   () => props.modelValue, // 必须通过返回值形式
   () => {
-    console.log('watch');
-
     // 防抖优化性能
     clearTimeout(updateTimer);
     updateTimer = setTimeout(() => {
@@ -68,11 +157,7 @@ watch(
         return;
       }
       // 如果当前没有对话组，则新建一个新的对话组
-      console.log('here');
-
       if (!currentMessageGroup.value) {
-        console.log('create');
-
         currentMessageGroup.value = newMessageGroup(
           props.modelValue[0].content.slice(0, 10) // 对话组的标题取第一条消息的前十个字符
         );
@@ -99,7 +184,7 @@ watch(
 
 let saveTimer: any;
 watch(
-  messageGroups.value,
+  messageGroups,
   () => {
     // 防抖优化性能
     clearTimeout(saveTimer);
@@ -117,7 +202,26 @@ defineExpose({
     emit('update:modelValue', []);
     currentMessageGroup.value = undefined;
   },
+  openHistory,
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.list {
+  height: 100%;
+  .el-row {
+    padding-right: 10px; // 保证滚动条显示
+  }
+  .history-item {
+    margin-bottom: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    .date {
+      font-size: 12px;
+    }
+  }
+  .history-using {
+    background-color: #ecf5ff;
+  }
+}
+</style>

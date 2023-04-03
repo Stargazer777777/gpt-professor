@@ -18,6 +18,7 @@
     "element-plus": "^2.3.0",
     "form-data": "^4.0.0",
     "highlight.js": "^11.7.0",
+    "moment": "^2.29.4",
     "openai-streams": "^4.1.0",
     "pinia": "^2.0.28",
     "prismjs": "^1.29.0",

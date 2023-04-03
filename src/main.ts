@@ -8,7 +8,6 @@ import '@/http/index';
 import './assets/main.css';
 import 'element-plus/dist/index.css';
 
-import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import VMDEditor from '@/vMarkdonw/index';
 
 const app = createApp(App);
@@ -16,6 +15,5 @@ const app = createApp(App);
 app.use(store);
 app.use(router);
 app.use(VMDEditor);
-
 
 app.mount('#app');
