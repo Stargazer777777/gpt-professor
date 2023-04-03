@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-icon class="close" :size="20" @click="emits('on-clickClose', index)">
+    <el-icon class="close" :size="20" @click="emit('on-clickClose', index)">
       <Close />
     </el-icon>
     <el-card class="box-card">
@@ -58,7 +58,7 @@
 import type { ChatMessage } from '@/declare/common';
 import { computed, ref } from 'vue';
 import { Close } from '@element-plus/icons-vue';
-import { emit } from 'process';
+
 type Props = {
   chatMessage: ChatMessage;
   showStatus: boolean;
@@ -72,7 +72,7 @@ const position = computed(() => {
   return props.chatMessage.headPosition;
 });
 
-const emits = defineEmits(['on-clickClose']);
+const emit = defineEmits(['on-clickClose']);
 </script>
 
 <style scoped lang="scss">

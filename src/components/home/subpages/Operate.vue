@@ -37,9 +37,9 @@ type Props = {
 const props = defineProps<Props>();
 
 const act = (key: string) => {
-  emits('on-act', key);
+  emit('on-act', key);
 };
-const emits = defineEmits(['on-act']);
+const emit = defineEmits(['on-act']);
 </script>
 
 <style scoped lang="scss">

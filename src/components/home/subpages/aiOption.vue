@@ -99,10 +99,10 @@ const props = defineProps<Props>();
 const tempFormData = ref<Record<string, any>>({
   ...props.modelValue,
 });
-const emits = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue']);
 
 watch(tempFormData.value, () => {
-  emits('update:modelValue', tempFormData.value);
+  emit('update:modelValue', tempFormData.value);
 });
 </script>
 

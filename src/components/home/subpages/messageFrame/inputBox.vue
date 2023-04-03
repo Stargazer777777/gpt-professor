@@ -17,7 +17,7 @@
           type="primary"
           plain
           size="default"
-          @click="emits('on-operateAct', item.key)"
+          @click="emit('on-operateAct', item.key)"
           v-for="item in actionList"
           >{{ item.name }}</el-button
         >
@@ -48,10 +48,10 @@ const text = ref('');
 const submitDisable = computed(() => {
   return text.value == '';
 });
-const emits = defineEmits(['on-submit', 'on-operateAct']);
+const emit = defineEmits(['on-submit', 'on-operateAct']);
 const submit = () => {
   if (text.value != '') {
-    emits('on-submit', text.value);
+    emit('on-submit', text.value);
     setTimeout(() => {
       text.value = '';
     });

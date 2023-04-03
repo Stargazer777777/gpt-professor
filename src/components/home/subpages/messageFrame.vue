@@ -50,22 +50,22 @@ watch(messageAmount, (newVal, oldVal) => {
   }
 });
 
-const emits = defineEmits([
+const emit = defineEmits([
   'on-userInput',
   'on-operateAct',
   'on-clickCloseSingleMessage',
 ]);
 
 const handleUserInput = (text: string) => {
-  emits('on-userInput', text);
+  emit('on-userInput', text);
 };
 
 const operateActHandler = (key: string) => {
-  emits('on-operateAct', key);
+  emit('on-operateAct', key);
 };
 
 const handleCloseMessage = (index: number) => {
-  emits('on-clickCloseSingleMessage', index);
+  emit('on-clickCloseSingleMessage', index);
 };
 </script>
 
