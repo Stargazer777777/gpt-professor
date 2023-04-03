@@ -20,6 +20,11 @@
         @on-click-close-single-message="deleteMessageByIndex"
       ></MessageFrame>
     </div>
+    <History
+      v-model="store.chatMessages"
+      storage-key="image-history"
+      ref="historyRef"
+    ></History>
   </div>
 </template>
 
@@ -27,15 +32,21 @@
 import MessageFrame from '@/components/home/subpages/messageFrame.vue';
 import aiOption from '@/components/home/subpages/aiOption.vue';
 import { useImageStore } from '@/stores/modules/image';
+import History from '@/components/home/subpages/history.vue';
+import { ref } from 'vue';
 const store = useImageStore();
+const historyRef = ref<InstanceType<typeof History>>();
 
 const operateAct = (actionKey: string) => {
   switch (actionKey) {
     case 'reGen':
       store.genImage();
       break;
-    case 'clear':
-      store.chatMessages = [];
+    case 'new':
+      historyRef.value?.closeCurrentGroup();
+      break;
+    case 'history':
+      historyRef.value?.openHistory();
       break;
     default:
       break;

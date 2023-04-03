@@ -49,12 +49,16 @@ export const useImageStore = defineStore('image-store', () => {
   ]);
   const actionList: Array<OperateAction> = [
     {
-      name: '清空',
-      key: 'clear',
+      name: '新对话',
+      key: 'new',
     },
     {
       name: '重新生成',
       key: 'reGen',
+    },
+    {
+      name: '历史记录',
+      key: 'history',
     },
   ];
   const formData = ref<Record<string, any>>({});
