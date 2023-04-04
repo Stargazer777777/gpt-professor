@@ -13,8 +13,7 @@
   >
     <template #header>
       <el-row :gutter="20" align="center" class="header">
-        <el-col :span="6" :offset="0"> </el-col>
-        <el-col :span="6" :offset="10">
+        <el-col :span="6" :offset="0">
           <el-popconfirm title="Sure?" @confirm="clearMessageGroups">
             <template #reference>
               <el-button
