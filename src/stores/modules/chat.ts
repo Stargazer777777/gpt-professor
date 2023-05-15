@@ -238,7 +238,7 @@ export const useChatStore = defineStore('chat-store', () => {
       let done = true;
       let partMessage: Record<string, any> = {};
       let chunk: ReadableStreamReadResult<Uint8Array>;
-      const streamWaitTime = 5000;
+      const streamWaitTime = 1 * 60 * 1000;
       chatMessages.value.push({
         role: 'assistant',
         headPosition: 'left',

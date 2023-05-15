@@ -37,7 +37,7 @@ declare module '@vue/runtime-core' {
     InputBox: typeof import('./src/components/home/subpages/messageFrame/inputBox.vue')['default']
     Menu: typeof import('./src/components/home/menu.vue')['default']
     MessageFrame: typeof import('./src/components/home/subpages/messageFrame.vue')['default']
-    Operate: typeof import('./src/components/home/subpages/operate.vue')['default']
+    Operate: typeof import('./src/components/home/subpages/Operate.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Setting: typeof import('./src/components/home/menu/setting.vue')['default']

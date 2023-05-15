@@ -35,7 +35,7 @@
           <el-row>
             <el-col
               :span="24"
-              v-for="item in reversedMessageGroups"
+              v-for="item in sortedMessageGroups"
               :key="item.id"
             >
               <el-card
@@ -114,8 +114,10 @@ const newMessageGroup = (title: string): MessageGroup => {
 };
 
 const messageGroups = ref<MessageGroup[]>(getStorageMessageGroups());
-const reversedMessageGroups = computed(() => {
-  return messageGroups.value.reverse();
+const sortedMessageGroups = computed(() => {
+  return messageGroups.value.sort((a, b) => {
+    return parseInt(b.id) - parseInt(a.id);
+  });
 });
 const currentMessageGroup = ref<MessageGroup>();
 
