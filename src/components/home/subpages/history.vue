@@ -116,7 +116,7 @@ const newMessageGroup = (title: string): MessageGroup => {
 const messageGroups = ref<MessageGroup[]>(getStorageMessageGroups());
 const sortedMessageGroups = computed(() => {
   return messageGroups.value.sort((a, b) => {
-    return parseInt(b.id) - parseInt(a.id);
+    return parseInt(a.id) - parseInt(b.id);
   });
 });
 const currentMessageGroup = ref<MessageGroup>();
