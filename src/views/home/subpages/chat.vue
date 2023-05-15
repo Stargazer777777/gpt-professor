@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-    <el-affix :offset="60">
-      <div class="option">
+    <div class="option">
+      <el-affix :offset="60">
         <aiOption
           v-model="store.formData"
           :options="store.options"
           title="选项"
         ></aiOption>
-      </div>
-    </el-affix>
+      </el-affix>
+    </div>
 
     <div class="frame">
       <MessageFrame
