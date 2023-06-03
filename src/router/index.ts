@@ -9,7 +9,7 @@ const router = createRouter({
     },
     {
       path: '/home',
-      component: () => import('@/views/home/home.vue'),
+      component: () => import('@/views/home.vue'),
       children: [
         {
           path: '',
@@ -19,15 +19,15 @@ const router = createRouter({
         },
         {
           path: 'chat',
-          component: () => import('@/views/home/subpages/chat.vue'),
+          component: () => import('@/views/home/chat.vue'),
         },
         {
           path:'image',
-          component:()=>import('@/views/home/subpages/image.vue')
+          component:()=>import('@/views/home/image.vue')
         },
         {
           path: 'help',
-          component: () => import('@/views/home/subpages/help.vue'),
+          component: () => import('@/views/home/help.vue'),
         },
       ],
     },

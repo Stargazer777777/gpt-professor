@@ -12,7 +12,7 @@
     :append-to-body="false"
   >
     <template #header>
-      <el-row :gutter="20" align="center" class="header">
+      <el-row :gutter="20" align="middle" class="header">
         <el-col :span="6" :offset="0">
           <el-popconfirm title="Sure?" @confirm="clearMessageGroups">
             <template #reference>
@@ -116,7 +116,7 @@ const newMessageGroup = (title: string): MessageGroup => {
 const messageGroups = ref<MessageGroup[]>(getStorageMessageGroups());
 const sortedMessageGroups = computed(() => {
   return messageGroups.value.sort((a, b) => {
-    return parseInt(a.id) - parseInt(b.id);
+    return parseInt(b.id) - parseInt(a.id);
   });
 });
 const currentMessageGroup = ref<MessageGroup>();

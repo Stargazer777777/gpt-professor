@@ -8,7 +8,7 @@ import '@/http/index';
 import './assets/main.css';
 import 'element-plus/dist/index.css';
 
-import VMDEditor from '@/vMarkdonw/index';
+import VMDEditor from '@/vMarkdown/index';
 
 const app = createApp(App);
 
