@@ -10,6 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AiOption: typeof import('./src/components/home/subpages/aiOption.vue')['default']
+    CompletionFrame: typeof import('./src/components/home/subpages/completionFrame.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']

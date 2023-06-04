@@ -63,11 +63,16 @@ type Props = {
   chatMessage: ChatMessage;
   showStatus: boolean;
   index: number;
+  defaultMdModle?: 'edit' | 'editable' | 'preview';
 };
 
 const mdModel = ref<'edit' | 'editable' | 'preview'>('preview');
 
 const props = defineProps<Props>();
+
+if (props.defaultMdModle) {
+  mdModel.value = props.defaultMdModle;
+}
 const position = computed(() => {
   return props.chatMessage.headPosition;
 });

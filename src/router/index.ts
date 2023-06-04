@@ -26,6 +26,10 @@ const router = createRouter({
           component:()=>import('@/views/home/image.vue')
         },
         {
+          path:'completion',
+          component:()=>import('@/views/home/completion.vue')
+        },
+        {
           path: 'help',
           component: () => import('@/views/home/help.vue'),
         },
